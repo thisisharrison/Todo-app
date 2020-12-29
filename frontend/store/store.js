@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from '../reducers/root_reducer';
+import thunk from '../middleware/thunk';
 
 // Redux store holds a reference to an app state
 // Store handles updating state when actions are dispatched
@@ -7,7 +8,7 @@ import rootReducer from '../reducers/root_reducer';
 
 // Will come in handy with middlewares
 const configureStore = (preloadedState = {}) => {
-    const store = createStore(rootReducer, preloadedState, applyMiddleware(addLoggingToDispatch));
+    const store = createStore(rootReducer, preloadedState, applyMiddleware(thunk, addLoggingToDispatch));
     store.subscribe(() => localStorage.state = JSON.stringify(store.getState()))
     return store;
 }

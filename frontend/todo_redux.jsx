@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import configureStore from './store/store';
 import Root from './components/root';
 
+// Debugging
+import { fetchTodos } from './actions/todo_actions';
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const preloadedState = localStorage.state ? JSON.parse(localStorage.state) : {};
@@ -16,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // store = _applyMiddlewares(store, addLoggingToDispatch);
 
     // Phase 3: redux's applyMiddleware (in store.js)
+
+    // Debugging
+    window.store = store;
+    window.fetchTodos = fetchTodos;
 
     const content = document.getElementById('content');
     ReactDOM.render(<Root store={store} />, content);
