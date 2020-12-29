@@ -35,9 +35,11 @@ class TodoForm extends React.Component {
     }
 
     render () {
+        let errors = this.props.errors ? <p>{this.props.errors}</p> : ""
         return (
             <form onSubmit={this.handleSubmit}>
                 <h3>Add Todo!</h3>
+                {errors}
                 <label htmlFor="title">Title</label>
                 <input type="text" 
                         id="title" 

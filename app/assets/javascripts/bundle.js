@@ -60,6 +60,37 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 
 /***/ }),
 
+/***/ "./frontend/actions/error_actions.js":
+/*!*******************************************!*\
+  !*** ./frontend/actions/error_actions.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RECEIVE_ERRORS": () => /* binding */ RECEIVE_ERRORS,
+/* harmony export */   "CLEAR_ERRORS": () => /* binding */ CLEAR_ERRORS,
+/* harmony export */   "receiveErrors": () => /* binding */ receiveErrors,
+/* harmony export */   "clearErrors": () => /* binding */ clearErrors
+/* harmony export */ });
+var RECEIVE_ERRORS = 'RECEIVE_ERRORS';
+var CLEAR_ERRORS = 'CLEAR_ERRORS'; // sync functions
+
+var receiveErrors = function receiveErrors(errors) {
+  return {
+    type: RECEIVE_ERRORS,
+    errors: errors
+  };
+};
+var clearErrors = function clearErrors() {
+  return {
+    type: CLEAR_ERRORS
+  };
+};
+
+/***/ }),
+
 /***/ "./frontend/actions/step_actions.js":
 /*!******************************************!*\
   !*** ./frontend/actions/step_actions.js ***!
@@ -119,11 +150,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "createTodo": () => /* binding */ createTodo
 /* harmony export */ });
 /* harmony import */ var _util_todo_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/todo_api_util */ "./frontend/util/todo_api_util.js");
+/* harmony import */ var _error_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./error_actions */ "./frontend/actions/error_actions.js");
 // Receive todos and populate
 var RECEIVE_TODOS = 'RECEIVE_TODOS'; // Receive todo, add or update it
 
 var RECEIVE_TODO = 'RECEIVE_TODO';
 var REMOVE_TODO = 'REMOVE_TODO';
+
  // Accepts array, reducer will turn this array into an object
 
 var receiveTodos = function receiveTodos(todos) {
@@ -159,7 +192,10 @@ var fetchTodos = function fetchTodos() {
 var createTodo = function createTodo(todo) {
   return function (dispatch) {
     return _util_todo_api_util__WEBPACK_IMPORTED_MODULE_0__.createTodo(todo).then(function (todo) {
-      return dispatch(receiveTodo(todo));
+      dispatch(receiveTodo(todo));
+      dispatch((0,_error_actions__WEBPACK_IMPORTED_MODULE_1__.clearErrors)());
+    }, function (err) {
+      return dispatch((0,_error_actions__WEBPACK_IMPORTED_MODULE_1__.receiveErrors)(err.responseJSON));
     });
   };
 };
@@ -784,9 +820,10 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var errors = this.props.errors ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, this.props.errors) : "";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("form", {
         onSubmit: this.handleSubmit
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Add Todo!"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Add Todo!"), errors, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("label", {
         htmlFor: "title"
       }, "Title"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("input", {
         type: "text",
@@ -893,7 +930,8 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
       });
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_todo_form__WEBPACK_IMPORTED_MODULE_3__.default, {
         receiveTodo: receiveTodo,
-        createTodo: createTodo
+        createTodo: createTodo,
+        errors: this.props.errors
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, list));
     }
   }]);
@@ -946,7 +984,8 @@ __webpack_require__.r(__webpack_exports__);
 var mapStateToProps = function mapStateToProps(state) {
   return {
     todos: (0,_reducers_selectors__WEBPACK_IMPORTED_MODULE_2__.allTodos)(state),
-    state: state
+    state: state,
+    errors: state.errors
   };
 };
 
@@ -1100,6 +1139,42 @@ var thunk = function thunk(_ref) {
 
 /***/ }),
 
+/***/ "./frontend/reducers/error_reducer.js":
+/*!********************************************!*\
+  !*** ./frontend/reducers/error_reducer.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+/* harmony import */ var _actions_error_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/error_actions */ "./frontend/actions/error_actions.js");
+
+
+var errorReducer = function errorReducer() {
+  var oldState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  var newState;
+  Object.freeze(oldState);
+
+  switch (action.type) {
+    case _actions_error_actions__WEBPACK_IMPORTED_MODULE_0__.RECEIVE_ERRORS:
+      return [action.errors];
+
+    case _actions_error_actions__WEBPACK_IMPORTED_MODULE_0__.CLEAR_ERRORS:
+      return [];
+
+    default:
+      return oldState;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (errorReducer);
+
+/***/ }),
+
 /***/ "./frontend/reducers/root_reducer.js":
 /*!*******************************************!*\
   !*** ./frontend/reducers/root_reducer.js ***!
@@ -1111,15 +1186,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _steps_reducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./steps_reducer */ "./frontend/reducers/steps_reducer.js");
 /* harmony import */ var _todos_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todos_reducer */ "./frontend/reducers/todos_reducer.js");
+/* harmony import */ var _error_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./error_reducer */ "./frontend/reducers/error_reducer.js");
 
 
 
-var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
+
+var rootReducer = (0,redux__WEBPACK_IMPORTED_MODULE_3__.combineReducers)({
   todos: _todos_reducer__WEBPACK_IMPORTED_MODULE_1__.default,
-  steps: _steps_reducer__WEBPACK_IMPORTED_MODULE_0__.default
+  steps: _steps_reducer__WEBPACK_IMPORTED_MODULE_0__.default,
+  errors: _error_reducer__WEBPACK_IMPORTED_MODULE_2__.default
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (rootReducer);
 

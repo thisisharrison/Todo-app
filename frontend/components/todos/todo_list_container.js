@@ -11,7 +11,8 @@ import TodoList from './todo_list';
 
 const mapStateToProps = state => ({
     todos: allTodos(state),
-    state
+    state, 
+    errors: state.errors
 });
 
 const mapDispatchToProps = dispatch => ({
