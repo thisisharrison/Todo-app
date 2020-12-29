@@ -115,7 +115,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "receiveTodos": () => /* binding */ receiveTodos,
 /* harmony export */   "receiveTodo": () => /* binding */ receiveTodo,
 /* harmony export */   "removeTodo": () => /* binding */ removeTodo,
-/* harmony export */   "fetchTodos": () => /* binding */ fetchTodos
+/* harmony export */   "fetchTodos": () => /* binding */ fetchTodos,
+/* harmony export */   "createTodo": () => /* binding */ createTodo
 /* harmony export */ });
 /* harmony import */ var _util_todo_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/todo_api_util */ "./frontend/util/todo_api_util.js");
 // Receive todos and populate
@@ -150,8 +151,15 @@ window.fetchTodos = fetchTodos; // async actions
 
 var fetchTodos = function fetchTodos() {
   return function (dispatch) {
-    _util_todo_api_util__WEBPACK_IMPORTED_MODULE_0__.fetchTodos().then(function (todos) {
+    return _util_todo_api_util__WEBPACK_IMPORTED_MODULE_0__.fetchTodos().then(function (todos) {
       return dispatch(receiveTodos(todos));
+    });
+  };
+};
+var createTodo = function createTodo(todo) {
+  return function (dispatch) {
+    return _util_todo_api_util__WEBPACK_IMPORTED_MODULE_0__.createTodo(todo).then(function (todo) {
+      return dispatch(receiveTodo(todo));
     });
   };
 };
@@ -759,16 +767,18 @@ var TodoForm = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(e) {
+      var _this3 = this;
+
       e.preventDefault();
-      var newTodo = Object.assign({}, this.state, {
-        id: (0,_util_util__WEBPACK_IMPORTED_MODULE_1__.uniqueId)()
-      }); // dispatch redux action
+      var todo = Object.assign({}, this.state); // dispatch redux action
 
-      this.props.receiveTodo(newTodo); // reset form
-
-      this.setState({
-        title: "",
-        body: ""
+      this.props.createTodo({
+        todo: todo
+      }).then(function () {
+        return _this3.setState({
+          title: "",
+          body: ""
+        });
       });
     }
   }, {
@@ -871,7 +881,8 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
       var _this$props = this.props,
           todos = _this$props.todos,
           receiveTodo = _this$props.receiveTodo,
-          removeTodo = _this$props.removeTodo;
+          removeTodo = _this$props.removeTodo,
+          createTodo = _this$props.createTodo;
       var list = todos.map(function (todo, idx) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_todo_list_item__WEBPACK_IMPORTED_MODULE_2__.default, {
           todo: todo,
@@ -881,7 +892,8 @@ var TodoList = /*#__PURE__*/function (_React$Component) {
         });
       });
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_todo_form__WEBPACK_IMPORTED_MODULE_3__.default, {
-        receiveTodo: receiveTodo
+        receiveTodo: receiveTodo,
+        createTodo: createTodo
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("ul", null, list));
     }
   }]);
@@ -948,6 +960,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchTodos: function fetchTodos() {
       return dispatch((0,_actions_todo_actions__WEBPACK_IMPORTED_MODULE_1__.fetchTodos)());
+    },
+    createTodo: function createTodo(todo) {
+      return dispatch((0,_actions_todo_actions__WEBPACK_IMPORTED_MODULE_1__.createTodo)(todo));
     }
   };
 };
@@ -1387,6 +1402,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   window.store = store;
   window.fetchTodos = _actions_todo_actions__WEBPACK_IMPORTED_MODULE_4__.fetchTodos;
+  window.createTodo = _actions_todo_actions__WEBPACK_IMPORTED_MODULE_4__.createTodo;
   var content = document.getElementById('content');
   react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_components_root__WEBPACK_IMPORTED_MODULE_3__.default, {
     store: store
@@ -1442,12 +1458,20 @@ document.addEventListener('DOMContentLoaded', function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "fetchTodos": () => /* binding */ fetchTodos
+/* harmony export */   "fetchTodos": () => /* binding */ fetchTodos,
+/* harmony export */   "createTodo": () => /* binding */ createTodo
 /* harmony export */ });
 var fetchTodos = function fetchTodos() {
   return $.ajax({
     method: 'GET',
     url: 'api/todos'
+  });
+};
+var createTodo = function createTodo(todo) {
+  return $.ajax({
+    method: 'POST',
+    url: 'api/todos',
+    data: todo
   });
 };
 

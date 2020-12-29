@@ -24,14 +24,14 @@ class TodoForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const newTodo = Object.assign({}, this.state, { id: uniqueId() });
+        const todo = Object.assign({}, this.state);
         // dispatch redux action
-        this.props.receiveTodo(newTodo);
-        // reset form
-        this.setState({
-            title: "",
-            body: ""
-        });
+        this.props.createTodo({todo}).then(
+            () => this.setState({
+                title: "",
+                body: ""
+            })
+        )
     }
 
     render () {

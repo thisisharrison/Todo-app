@@ -4,7 +4,7 @@ import configureStore from './store/store';
 import Root from './components/root';
 
 // Debugging
-import { fetchTodos } from './actions/todo_actions';
+import { fetchTodos, createTodo } from './actions/todo_actions';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Debugging
     window.store = store;
     window.fetchTodos = fetchTodos;
+    window.createTodo = createTodo;
 
     const content = document.getElementById('content');
     ReactDOM.render(<Root store={store} />, content);

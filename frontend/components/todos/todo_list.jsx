@@ -14,14 +14,14 @@ class TodoList extends React.Component {
     }
 
     render() {
-        const { todos, receiveTodo, removeTodo } = this.props;
+        const { todos, receiveTodo, removeTodo, createTodo } = this.props;
         const list = todos.map((todo, idx) => <TodoListItem todo={todo}
             key={todo.id}
             removeTodo={removeTodo}
             receiveTodo={receiveTodo} />);
         return (
             <div>
-                <TodoForm receiveTodo={receiveTodo} />
+                <TodoForm receiveTodo={receiveTodo} createTodo={createTodo}/>
                 <ul>
                     {list}
                 </ul>
