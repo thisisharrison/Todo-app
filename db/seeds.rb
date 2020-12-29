@@ -7,6 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Todo.destroy_all
+Step.destroy_all
 
 todo1 = Todo.create!(
     title: "first",
@@ -24,4 +25,25 @@ todo3 = Todo.create!(
     title: "third",
     body: "third to do ",
     done: false
+)
+
+step1 = Step.create!(
+    title: "step 1",
+    body: "gogogogo",
+    done: false,
+    todo_id: todo1.id
+)
+
+step2 = Step.create!(
+    title: "step 2",
+    body: "faster!",
+    done: false,
+    todo_id: todo1.id
+)
+
+step2 = Step.create!(
+    title: "step 1",
+    body: "slow and steady",
+    done: false,
+    todo_id: todo3.id
 )

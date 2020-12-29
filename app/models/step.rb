@@ -1,7 +1,5 @@
-class Todo < ApplicationRecord
+class Step < ApplicationRecord
     validates :title, :body, presence: true
     validates :done, inclusion: { in: [true, false] }
-    
-    has_many :steps, 
-        dependent: :destroy
+    belongs_to :todo
 end
