@@ -26,7 +26,7 @@ class TodoForm extends React.Component {
         e.preventDefault();
         const todo = Object.assign({}, this.state);
         // dispatch redux action
-        this.props.createTodo({todo}).then(
+        this.props.createTodo(todo).then(
             () => this.setState({
                 title: "",
                 body: ""

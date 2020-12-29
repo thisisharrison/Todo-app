@@ -13,10 +13,10 @@ class TodoListItem extends React.Component {
 
     toggleDone(e) {
         e.preventDefault();
-        let newState = Object.assign({}, this.props.todo);
-        newState.done = !newState.done;
+        let todo = Object.assign({}, this.props.todo);
+        todo.done = !todo.done;
         // overwrite the todo
-        this.props.receiveTodo(newState);
+        this.props.updateTodo(todo);
     }
 
     toggleDetail(e) {

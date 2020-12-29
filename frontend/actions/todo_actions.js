@@ -32,6 +32,9 @@ window.receiveTodos = receiveTodos;
 window.receiveTodo = receiveTodo;
 window.removeTodo = removeTodo;
 window.fetchTodos = fetchTodos;
+window.createTodo = createTodo;
+window.updateTodo = updateTodo;
+window.deleteTodo = deleteTodo;
 
 // async actions
 export const fetchTodos = () => dispatch => (
@@ -42,6 +45,22 @@ export const createTodo = todo => dispatch => (
     APIUtil.createTodo(todo)
         .then(
             todo => {dispatch(receiveTodo(todo)); dispatch(clearErrors())},
+            err => dispatch(receiveErrors(err.responseJSON))
+        )
+)
+
+export const updateTodo = todo => dispatch => (
+    APIUtil.updateTodo(todo)
+        .then(
+            todo => {dispatch(receiveTodo(todo)); dispatch(clearErrors());},
+            err => dispatch(receiveErrors(err.responseJSON))
+        )
+)
+
+export const deleteTodo = todo => dispatch => (
+    APIUtil.deleteTodo(todo)
+        .then(
+            todo => { dispatch(removeTodo(todo)); dispatch(clearErrors()); },
             err => dispatch(receiveErrors(err.responseJSON))
         )
 )

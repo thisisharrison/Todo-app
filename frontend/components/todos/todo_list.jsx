@@ -14,14 +14,14 @@ class TodoList extends React.Component {
     }
 
     render() {
-        const { todos, receiveTodo, removeTodo, createTodo } = this.props;
+        const { todos, updateTodo, createTodo, deleteTodo } = this.props;
         const list = todos.map((todo, idx) => <TodoListItem todo={todo}
             key={todo.id}
-            removeTodo={removeTodo}
-            receiveTodo={receiveTodo} />);
+            deleteTodo={deleteTodo}
+            updateTodo={updateTodo} />);
         return (
             <div>
-                <TodoForm receiveTodo={receiveTodo} createTodo={createTodo} errors={this.props.errors}/>
+                <TodoForm updateTodo={updateTodo} createTodo={createTodo} errors={this.props.errors}/>
                 <ul>
                     {list}
                 </ul>
@@ -29,20 +29,5 @@ class TodoList extends React.Component {
         )
     }
 }
-
-// const TodoList = ({ todos, receiveTodo, removeTodo }) => {
-//     const list = todos.map((todo, idx) => <TodoListItem todo={todo} 
-//                                                         key={todo.id} 
-//                                                         removeTodo={removeTodo}
-//                                                         receiveTodo={receiveTodo}/>);
-//     return (
-//     <div>
-//         <TodoForm receiveTodo={receiveTodo} />
-//         <ul>
-//             {list}
-//         </ul>
-//     </div>
-//     )
-// }
 
 export default TodoList; 
