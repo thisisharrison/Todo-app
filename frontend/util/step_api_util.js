@@ -21,7 +21,7 @@ export const updateStep = (step) => (
     })
 )
 
-export const removeStep = (step) => (
+export const deleteStep = (step) => (
     $.ajax({
         method: 'DELETE',
         url: `api/steps/${step.id}`,
