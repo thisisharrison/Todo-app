@@ -5,12 +5,12 @@ class Api::StepsController < ApplicationController
     end
 
     def create
-        @steps = Step.new(step_params)
+        @step = Step.new(step_params)
         # @steps = Todo.find(params[:tod0_id]).steps.new(step_params)
         if @step.save
             render json: @step
         else
-            render json: @steps.errors.full_messages, status: 422
+            render json: @step.errors.full_messages, status: 422
         end
     end
 

@@ -5,6 +5,11 @@ import StepListContainer from '../steps/step_list_container';
 // Form to create new steps
 
 class TodoDetailView extends React.Component {
+    // made the ajax call and store steps in redux state
+    componentDidMount() {
+        this.props.fetchSteps();
+    }
+
     render() {
         const {todo, removeTodo} = this.props;
         return (
@@ -12,7 +17,7 @@ class TodoDetailView extends React.Component {
                 <h3>Detail</h3>
                 <p>{todo.body}</p>
                 <button onClick={removeTodo}>Remove</button>
-                <StepListContainer todo_id={todo.id}/>
+                <StepListContainer todo={todo}/>
             </div>
         )
     }

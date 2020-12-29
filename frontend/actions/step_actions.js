@@ -2,6 +2,7 @@ export const RECEIVE_STEPS = 'RECEIVE_STEPS';
 export const RECEIVE_STEP = 'RECEIVE_STEP';
 export const REMOVE_STEP = 'REMOVE_STEP';
 import * as APIUtil from '../util/step_api_util';
+import { clearErrors, receiveErrors } from './error_actions';
 
 export const receiveSteps = (steps) => ({
     type: RECEIVE_STEPS,
@@ -23,8 +24,12 @@ export const fetchSteps = (todo) => dispatch => (
     APIUtil.fetchSteps(todo).then(steps => dispatch(receiveSteps(steps)))
 )
 
-export const addStep = (todo, step) => dispatch => (
-    APIUtil.addStep(todo, step).then(step => dispatch(receiveStep(step)))
+export const addStep = (todo_id, step) => dispatch => (
+    APIUtil.addStep(todo_id, step)
+        .then(
+            step => {dispatch(receiveStep(step)); dispatch(clearErrors())},
+            err => dispatch(receiveErrors(err.responseJSON))
+            )
 )
 
 export const updateStep = (step) => dispatch => (

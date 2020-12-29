@@ -20,17 +20,20 @@ class StepForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const newStep = Object.assign({}, this.state, {id: uniqueId()});
-        this.props.receiveStep(newStep);
-        this.setState({
-            title: "",
-            body: ""
-        });
+        const newStep = Object.assign({}, this.state);
+        this.props.addStep(this.props.todo_id, newStep).then(
+            this.setState({
+                title: "",
+                body: ""
+            })
+        )
     }
         
     render() {
+        let errors = this.props.errors ? <p>{this.props.errors}</p> : ""
         return (
             <form onSubmit={this.handleSubmit}>
+                {errors}
                 <label htmlFor="step-title">Title</label>
                 <input type="text" 
                         id="step-title" 

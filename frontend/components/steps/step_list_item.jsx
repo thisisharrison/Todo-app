@@ -10,17 +10,17 @@ class StepListItem extends React.Component {
         e.preventDefault();
         const toggleStep = Object.assign({}, this.props.step)
         toggleStep.done = !toggleStep.done;
-        this.props.receiveStep(toggleStep);
+        this.props.updateStep(toggleStep);
     }
 
     render() {
-        const { removeStep } = this.props;
+        const { deleteStep } = this.props;
         const { title, body, done } = this.props.step;
         return (
             <li>
-                <span>{title}</span>
-                <span>{body}</span>
-                <button onClick={removeStep}>Remove Step</button>
+                <h5>{title}</h5>
+                <p>{body}</p>
+                <button onClick={deleteStep}>Remove Step</button>
                 <button onClick={this.toggleDone}>
                     {done ? "Undo" : "Done"}
                 </button>

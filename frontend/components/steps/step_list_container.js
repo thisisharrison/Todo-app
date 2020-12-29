@@ -1,20 +1,20 @@
 import { connect } from 'react-redux';
-import { receiveStep } from '../../actions/step_actions';
+import { receiveStep, fetchSteps, addStep, deleteStep, updateStep } from '../../actions/step_actions';
 import { stepsByTodoId } from '../../reducers/selectors';
 import StepList from './step_list';
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    receiveStep: (...args) => dispatch(receiveStep(...args)),
-    fetchSteps: (...args) => dispatch(fetchSteps(...args)),
-    addStep: (...args) => dispatch(addStep(...args)),
-    removeStep: (...args) => dispatch(removeStep(...args)),
-    updateStep: (...args) => dispatch(updateStep(...args))
+    // sync
+    // receiveStep: (...args) => dispatch(receiveStep(...args)),
+    // async: todo_id and steps as args
+    addStep: (...args) => dispatch(addStep(...args))
 });
 
 // the whole state and a todo_id in a step
-const mapStateToProps = (state, { todo_id }) => ({
-    steps: stepsByTodoId(state, todo_id),
-    todo_id
+const mapStateToProps = (state, { todo }) => ({
+    steps: stepsByTodoId(state, todo.id),
+    todo_id: todo.id,
+    todo
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StepList);

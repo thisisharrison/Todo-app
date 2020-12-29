@@ -5,10 +5,13 @@ import { receiveSteps } from '../../actions/step_actions';
 // React Component
 import TodoDetailView from './todo_detail_view';
 
-// todo passed in todo_list_item
+// todo_list_item passed in todo to todo_detail_view
 const mapDispatchToProps = (dispatch, { todo }) => ({
     removeTodo: () => dispatch(removeTodo(todo)),
-    receiveSteps: (steps) => dispatch(receiveSteps(steps))
+    // async
+    fetchSteps: () => dispatch(fetchSteps(todo))
+    // sync
+    // receiveSteps: (steps) => dispatch(receiveSteps(steps))
 })
 
 // Connect to the detail view React component
