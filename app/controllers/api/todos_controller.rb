@@ -1,11 +1,11 @@
 class Api::TodosController < ApplicationController
     def show
         @todo = Todo.find(params[:id])
-        render json: @todo
+        render json: @todo, include: :tags
     end
 
     def index
-        render json: Todo.all
+        render json: Todo.all, include: :tags
     end
 
     def create
@@ -35,7 +35,7 @@ class Api::TodosController < ApplicationController
     private
 
     def todo_params
-        params.require(:todo).permit(:title, :body, :done)
+        params.require(:todo).permit(:title, :body, :done, :tag_names)
     end
 
 end

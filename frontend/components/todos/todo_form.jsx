@@ -12,10 +12,14 @@ class TodoForm extends React.Component {
         this.state = {
             title: "",
             body: "",
-            done: false
+            done: false,
+            tag: "",
+            tag_names: []
         };
         this.handleInput = this.handleInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTag = this.handleTag.bind(this);
+        this.removeTag = this.removeTag.bind(this);
     }
 
     handleInput(key) {
@@ -29,13 +33,26 @@ class TodoForm extends React.Component {
         this.props.createTodo(todo).then(
             () => this.setState({
                 title: "",
-                body: ""
+                body: "",
+                tag_names: []
             })
         )
     }
 
+    handleTag(e) {
+        e.preventDefault();
+        this.setState({ tag_names: [...this.state.tag_names, this.state.tag], tag: "" });
+    }
+
+    removeTag(idx) {
+        this.setState({ tag_names: this.state.tag_names.splice(idx, 1) })
+    }
+
     render () {
         let errors = this.props.errors ? <p>{this.props.errors}</p> : ""
+        let tag_names = this.state.tag_names.map((tag, idx) => (
+            <li key={idx} onClick={() => {this.removeTag(idx)}}>{tag}</li>
+        ))
         return (
             <form onSubmit={this.handleSubmit}>
                 <h3>Add Todo!</h3>
@@ -55,6 +72,19 @@ class TodoForm extends React.Component {
                         placeholder="Final project and interview prep"
                         value={this.state.body}
                         onChange={this.handleInput('body')}></textarea>
+
+                <label htmlFor="tags">Tag Names</label>
+                <input type="text"
+                        id="tags"
+                        placeholder="urgent"
+                        value={this.state.tag}
+                        onChange={this.handleInput('tag')}
+                        />
+                <button type="button"
+                        onClick={this.handleTag}>Add Tag</button>
+                <ul>
+                    { tag_names }
+                </ul>
 
                 <input type="submit" 
                         value="Add"/>
