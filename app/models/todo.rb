@@ -12,6 +12,8 @@ class Todo < ApplicationRecord
         through: :taggings,
         source: :tag
     
+    belongs_to :user
+    
     # users can define new or select existing tag names
     def tag_names=(tag_names)
         self.tags = tag_names.map do |tag_name|
